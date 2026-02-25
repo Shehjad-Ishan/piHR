@@ -110,6 +110,12 @@ async def process_device_message(message: str, websocket):
             except Exception as e:
                 logger.error(f"DB Error on delete: {e}")
                 response = {"ret": "delete", "result": False, "reason": "db_error"}
+
+    elif cmd == "sendlog":
+        records = data.get("record", [])
+        logger.info(f"Received {len(records)} log records to store.")
+        response = {"ret": "sendlog", "result": True, "count": len(records)}
+
     else:
         logger.warning(f"Unknown command: {cmd}")
         response = {"ret": "unknown", "result": False, "reason": "invalid command"}
